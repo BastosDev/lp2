@@ -1,14 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
-
 import java.util.Scanner;
 import java.util.ArrayList;
-/**
- *
- * @author Dray
- */
+
 public class ProjetoERP {
 
     public static void main(String[] args) {
@@ -18,101 +10,77 @@ public class ProjetoERP {
        CadastroMedico cadMe = new CadastroMedico();
        ArrayList<Paciente> pacientes = new ArrayList<>();
        ArrayList<Medico> medicos = new ArrayList<>();
-       int resp, aux=0;
-       String user, pass, trig;
-       boolean isPaciente = false, login = false, cancel = false, ini=true;
 
-       // menu inicial
+       boolean ini = true;
+
        while(ini){
-            System.out.print("---- MENU ----\n\n1) Cadastrar como paciente\n2) Cadastrar como médico\n3) Login\n4) Desligar\n");
-            resp = scan.nextInt();
+            System.out.print("\n---- MENU ----\n1) Cadastrar como paciente\n2) Cadastrar como médico\n3) Login\n4) Sair\nOpção: ");
+            int resp = scan.nextInt();
+
             switch(resp){
                 case 1:
                     pacientes.add(cadPa.cadastro());
+                    System.out.println("Paciente cadastrado!");
+                    break;
                 case 2:
                     medicos.add(cadMe.cadastro());
+                    System.out.println("Médico cadastrado!");
+                    break;
                 case 3:
-                    boolean quebra = true;
-                    cancel = false;
-                    while(quebra){
-                        aux=0;
-                        System.out.println("Digite seu nome: ");
-                        user = scan.next();
-                        boolean noResult = true;
-                        for (Paciente temp : pacientes) {
-                            if (temp.nome.equals(user)) {
-                                isPaciente = true;
-                                quebra = false;
-                                noResult = false;
-                                break;
-                            }
-                            aux++;
-                        }
-                        boolean NOResult = true;
-                        if(noResult){
-                            aux=0;
-                            for(Medico Temp : medicos){
-                                if(Temp.nome.equals(user)) {
-                                    quebra = false;
-                                    NOResult = false;
-                                    break;
-                                }
-                                aux++;
-                            }
-                        }
-                        if(quebra){
-                            System.out.println("Usuário não encontrado. Continuar? S/N");
-                            trig = scan.next();
-                            if(trig.equals("N") || trig.equals("n")) {
-                                cancel = true;
-                                quebra = false;
-                            }
-                        }
-                    }
-                    if(cancel) {
-                        break;
-                    }
-                    quebra = true;
-                    while(quebra){
-                        System.out.println("Digite sua senha: ");
-                        pass = scan.next();
-                        if(isPaciente) {
-                            if(pass.equals(pacientes.get(aux).senha)){
-                                login = true;
-                                quebra = false;
-                            } else {
-                                System.out.println("Senha incorreta, deseja continuar? S/N");
-                                trig = scan.next();
-                                if(trig.equals("N") || trig.equals("n")) {
-                                    cancel = true;
-                                    quebra = false;
-                                }
-                            }
-                        } else {
-                            if(pass.equals(medicos.get(aux).senha)) {
-                                login = true;
-                                quebra = false;
-                            } else {
-                                System.out.println("Senha incorreta, deseja continuar? S/N");
-                                trig = scan.next();
-                                if(trig.equals("N") || trig.equals("n")) {
-                                    cancel = true;
-                                    quebra = false;
-                                }
-                            }
-                        }
-                        if(cancel){
+                    System.out.println("Digite seu CPF: ");
+                    String loginCpf = scan.next();
+                    System.out.println("Digite sua senha: ");
+                    String loginSenha = scan.next();
+
+                    Paciente pacLogado = null;
+                    Medico medLogado = null;
+
+                    for(Paciente p : pacientes){
+                        if(p.CPF.equals(loginCpf) && p.senha.equals(loginSenha)){
+                            pacLogado = p;
                             break;
                         }
                     }
-                    quebra = true;
-                    if(login){
-                        if(isPaciente) {
-                            while(quebra) {
 
+                    if(pacLogado == null){
+                        for(Medico m : medicos){
+                            if(m.CPF.equals(loginCpf) && m.senha.equals(loginSenha)){
+                                medLogado = m;
+                                break;
                             }
                         }
                     }
+
+                    if(pacLogado != null){
+                        boolean menuP = true;
+                        while(menuP){
+                            System.out.println("\n--- Área do Paciente " + pacLogado.nome + " ---");
+                            System.out.println("1) Agendar Consulta");
+                            System.out.println("2) Ver Minhas Consultas");
+                            System.out.println("0) Voltar");
+                            int op = scan.nextInt();
+                            if(op == 1) pacLogado.iniciarAgendamento(medicos);
+                            else if(op == 2) pacLogado.listarConsultas();
+                            else if(op == 0) menuP = false;
+                        }
+                    } else if(medLogado != null){
+                        boolean menuM = true;
+                        while(menuM){
+                            System.out.println("\n--- Área do Médico " + medLogado.nome + " ---");
+                            System.out.println("1) Cadastrar Horário Livre");
+                            System.out.println("2) Ver Agenda (Consultas Marcadas)");
+                            System.out.println("3) Remover Horário Livre");
+                            System.out.println("0) Voltar");
+                            int op = scan.nextInt();
+                            if(op == 1) medLogado.cadastrarHorario();
+                            else if(op == 2) medLogado.listarConsultas();
+                            else if(op == 3) medLogado.modificarHorario();
+                            else if(op == 0) menuM = false;
+                        }
+                    } else {
+                        System.out.println("Login incorreto.");
+                    }
+                    break;
                 case 4:
                     ini = false;
                     break;
@@ -120,5 +88,5 @@ public class ProjetoERP {
                     System.out.println("Comando inválido");
             }
         }
-    } 
+    }
 }
