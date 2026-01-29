@@ -32,6 +32,7 @@ public class Paciente extends Pessoa implements PermPacientes {
             String dataHora = scan.next();
 
             if (medicoEscolhido.receberAgendamento(dataHora, this.nome)) {
+                ProjetoERP.salvarLog("Paciente " + this.nome + " agendou com " + medicoEscolhido.nome + " para " + dataHora);
                 System.out.println("Consulta agendada para " + dataHora + " com o médico " + medicoEscolhido.nome);
                 consultas.add(dataHora + " com o médico " + medicoEscolhido.nome);
             } else {
@@ -58,6 +59,7 @@ public class Paciente extends Pessoa implements PermPacientes {
     public void cancelarConsulta(String dataHora, Medico medico) {
         String consulta = dataHora + " com o médico " + medico.nome;
         if (consultas.remove(consulta)) {
+            ProjetoERP.salvarLog("Paciente " + this.nome + " cancelou consulta de " + dataHora);
             System.out.println("Consulta cancelada.");
         } else {
             System.out.println("Consulta não encontrada.");

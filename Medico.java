@@ -15,6 +15,7 @@ public class Medico extends Pessoa implements PermMedicos {
         System.out.println("Digite uma data e horário (dd/mm/aa hh:mm): ");
         txt = scan.next();
         horarios.add(txt);
+        ProjetoERP.salvarLog("Medico " + this.nome + " cadastrou horario: " + txt);
         System.out.println("Horário cadastrado.");
     }
 
@@ -37,6 +38,7 @@ public class Medico extends Pessoa implements PermMedicos {
         System.out.println("Digite o horário que deseja remover (dd/mm/aa hh:mm): ");
         String horarioRemover = scan.next();
         if (horarios.remove(horarioRemover)) {
+            ProjetoERP.salvarLog("Medico " + this.nome + " removeu horario: " + horarioRemover);
             System.out.println("Horário " + horarioRemover + " removido.");
         } else {
             System.out.println("Horário não encontrado.");

@@ -1,7 +1,17 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class ProjetoERP {
+
+    public static void salvarLog(String msg) {
+        try {
+            FileWriter fw = new FileWriter("log.txt", true);
+            fw.write(msg + "\n");
+            fw.close();
+        } catch (IOException e) {}
+    }
 
     public static void main(String[] args) {
 
@@ -19,11 +29,15 @@ public class ProjetoERP {
 
             switch(resp){
                 case 1:
-                    pacientes.add(cadPa.cadastro());
+                    Paciente p = cadPa.cadastro();
+                    pacientes.add(p);
+                    salvarLog("Novo paciente: " + p.nome);
                     System.out.println("Paciente cadastrado!");
                     break;
                 case 2:
-                    medicos.add(cadMe.cadastro());
+                    Medico m = cadMe.cadastro();
+                    medicos.add(m);
+                    salvarLog("Novo medico: " + m.nome);
                     System.out.println("Médico cadastrado!");
                     break;
                 case 3:
@@ -35,23 +49,24 @@ public class ProjetoERP {
                     Paciente pacLogado = null;
                     Medico medLogado = null;
 
-                    for(Paciente p : pacientes){
-                        if(p.CPF.equals(loginCpf) && p.senha.equals(loginSenha)){
-                            pacLogado = p;
+                    for(Paciente pa : pacientes){
+                        if(pa.CPF.equals(loginCpf) && pa.senha.equals(loginSenha)){
+                            pacLogado = pa;
                             break;
                         }
                     }
 
                     if(pacLogado == null){
-                        for(Medico m : medicos){
-                            if(m.CPF.equals(loginCpf) && m.senha.equals(loginSenha)){
-                                medLogado = m;
+                        for(Medico me : medicos){
+                            if(me.CPF.equals(loginCpf) && me.senha.equals(loginSenha)){
+                                medLogado = me;
                                 break;
                             }
                         }
                     }
 
                     if(pacLogado != null){
+                        salvarLog("Login Paciente: " + pacLogado.nome);
                         boolean menuP = true;
                         while(menuP){
                             System.out.println("\n--- Área do Paciente " + pacLogado.nome + " ---");
@@ -64,6 +79,7 @@ public class ProjetoERP {
                             else if(op == 0) menuP = false;
                         }
                     } else if(medLogado != null){
+                        salvarLog("Login Medico: " + medLogado.nome);
                         boolean menuM = true;
                         while(menuM){
                             System.out.println("\n--- Área do Médico " + medLogado.nome + " ---");
