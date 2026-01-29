@@ -26,6 +26,7 @@ public class ProjetoERP {
        while(ini){
             System.out.print("\n---- MENU ----\n1) Cadastrar como paciente\n2) Cadastrar como médico\n3) Login\n4) Sair\nOpção: ");
             int resp = scan.nextInt();
+            scan.nextLine();
 
             switch(resp){
                 case 1:
@@ -42,9 +43,9 @@ public class ProjetoERP {
                     break;
                 case 3:
                     System.out.println("Digite seu CPF: ");
-                    String loginCpf = scan.next();
+                    String loginCpf = scan.nextLine();
                     System.out.println("Digite sua senha: ");
-                    String loginSenha = scan.next();
+                    String loginSenha = scan.nextLine();
 
                     Paciente pacLogado = null;
                     Medico medLogado = null;
@@ -72,10 +73,30 @@ public class ProjetoERP {
                             System.out.println("\n--- Área do Paciente " + pacLogado.nome + " ---");
                             System.out.println("1) Agendar Consulta");
                             System.out.println("2) Ver Minhas Consultas");
+                            System.out.println("3) Cancelar Consulta");
                             System.out.println("0) Voltar");
                             int op = scan.nextInt();
+                            scan.nextLine();
+
                             if(op == 1) pacLogado.iniciarAgendamento(medicos);
                             else if(op == 2) pacLogado.listarConsultas();
+                            else if(op == 3) {
+                                System.out.println("Selecione o médico da consulta:");
+                                for(int i=0; i<medicos.size(); i++){
+                                    System.out.println((i+1) + ") " + medicos.get(i).nome);
+                                }
+                                int idMed = scan.nextInt();
+                                scan.nextLine();
+                                if(idMed > 0 && idMed <= medicos.size()){
+                                    Medico medicoAlvo = medicos.get(idMed-1);
+                                    System.out.println("Digite o horário exato (copie da sua lista):");
+                                    pacLogado.listarConsultas();
+                                    String dataHora = scan.nextLine();
+                                    pacLogado.cancelarConsulta(dataHora, medicoAlvo);
+                                } else {
+                                    System.out.println("Opção inválida.");
+                                }
+                            }
                             else if(op == 0) menuP = false;
                         }
                     } else if(medLogado != null){
@@ -85,12 +106,16 @@ public class ProjetoERP {
                             System.out.println("\n--- Área do Médico " + medLogado.nome + " ---");
                             System.out.println("1) Cadastrar Horário Livre");
                             System.out.println("2) Ver Agenda (Consultas Marcadas)");
-                            System.out.println("3) Remover Horário Livre");
+                            System.out.println("3) Modificar Horário Livre");
+                            System.out.println("4) Cancelar Consulta Agendada");
                             System.out.println("0) Voltar");
                             int op = scan.nextInt();
+                            scan.nextLine();
+
                             if(op == 1) medLogado.cadastrarHorario();
                             else if(op == 2) medLogado.listarConsultas();
                             else if(op == 3) medLogado.modificarHorario();
+                            else if(op == 4) medLogado.cancelarConsulta();
                             else if(op == 0) menuM = false;
                         }
                     } else {

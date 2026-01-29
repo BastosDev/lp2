@@ -1,25 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 import java.util.Scanner;
 
-/**
- *
- * @author Dray
- */
 public class CadastroPaciente {
 
     public Paciente cadastro() {
         String nome, senha, CPF, tel, conSenha, respS;
         Scanner scan = new Scanner(System.in);
+
         while (true) {
             System.out.println("Digite o seu nome: ");
-            nome = scan.next();
+            nome = scan.nextLine();
             System.out.println("Este nome está correto? S/N");
-            respS = scan.next();
-            if (respS.contentEquals("S") || respS.contentEquals("s")) {
+            respS = scan.nextLine();
+            if (respS.equalsIgnoreCase("S")) {
                 break;
             } else {
                 System.out.println("Tente novamente.");
@@ -27,7 +19,7 @@ public class CadastroPaciente {
         }
         while (true) {
             System.out.println("Digite o seu CPF (apenas número): ");
-            CPF = scan.next();
+            CPF = scan.nextLine();
             if (CPF.length() == 11) {
                 break;
             } else {
@@ -36,7 +28,7 @@ public class CadastroPaciente {
         }
         while (true) {
             System.out.println("Digite o seu número de telefone (Ex: 9--------");
-            tel = scan.next();
+            tel = scan.nextLine();
             if(tel.length()==9){
                 break;
             } else {
@@ -45,10 +37,10 @@ public class CadastroPaciente {
         }
         while (true) {
             System.out.println("Digite uma senha");
-            senha = scan.next();
+            senha = scan.nextLine();
             System.out.println("Digite a senha novamente para confirmar: ");
-            conSenha = scan.next();
-            if (senha.contentEquals(conSenha)) {
+            conSenha = scan.nextLine();
+            if (senha.equals(conSenha)) {
                 break;
             } else {
                 System.out.println("As senhas não correspondem, tente novamente.");
